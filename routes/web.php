@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 //home
-Route::get('/',[UserController::class,'index']);
+Route::get('/',[AdminLoginController::class,'index'])->name('index');
+
+//auth
+Route::post('store',[AdminLoginController::class,'store'])->name('store');
+
 //users
 Route::resource('users',UserController::class);
