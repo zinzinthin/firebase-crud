@@ -10,7 +10,7 @@
 <body class="contianer-fluid bg-primary">
     <div class="row justify-content-center align-items-center" style="height: 500px">
         <div class="col-6 bg-white">
-            <h1 class="m-4 text-center">Hello User!</h1>
+            <h1 class="m-6 text-center">Hello User!</h1>
             <form action="{{ route('store') }}" method="post">
                 @csrf
                 <div class="m-3">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Helper\FirebaseConnection;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class UserController extends Controller
 {
@@ -29,8 +30,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        FirebaseConnection::connect()->getReference('users')->push($request->except(['_token']));
-       return redirect()->route('users.index');
+        /* Upload image to cloud storage */
+            $localPath = public_path('firebase-temp-uploads') .'/';
+            $cloudPath = "Images/";
+           $image = $request->file('image');
+           $extension = $image->getClientOriginalExtension();
+           $name = $image->getFilename().time();
+           $file = $name .'.'.$extension;
+           if($image->move($localPath,$file)){
+            $uploadFile = fopen($localPath.$file, 'r');
+           $storageRef = Firebase::storage()->getBucket()->upload($uploadFile,['name' => $cloudPath.$file]);
+            unlink($localPath . $file);
+            $downloadUrl = $storageRef->signedUrl(new \DateTime('tomorrow'));
+            if(isset($downloadUrl)){
+                $data = [
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'image' => $downloadUrl,
+                    'city' => $request->city,
+                ];
+                FirebaseConnection::connect()->getReference('users')->push($data);
+                return redirect()->route('users.index');
+            }
+           }
     }
 
     /**
