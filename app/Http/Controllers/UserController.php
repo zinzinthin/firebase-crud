@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Helper\FirebaseConnection;
+use App\Http\Requests\ProfileStoreRequest;
 use Kreait\Laravel\Firebase\Facades\Firebase;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class UserController extends Controller
 {
@@ -28,7 +30,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProfileStoreRequest $request)
     {
         /* Upload image to cloud storage */
             $localPath = public_path('firebase-temp-uploads') .'/';
@@ -41,7 +43,7 @@ class UserController extends Controller
             $uploadFile = fopen($localPath.$file, 'r');
            $storageRef = Firebase::storage()->getBucket()->upload($uploadFile,['name' => $cloudPath.$file]);
             unlink($localPath . $file);
-            $downloadUrl = $storageRef->signedUrl(new \DateTime('tomorrow'));
+            $downloadUrl = $storageRef->signedUrl(new \DateTime('2100'));
             if(isset($downloadUrl)){
                 $data = [
                     'first_name' => $request->first_name,

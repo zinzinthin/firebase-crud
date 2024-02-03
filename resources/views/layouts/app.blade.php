@@ -29,23 +29,24 @@
                                 ->getSnapshot()
                                 ->getValue();
                         @endphp
-                        @if ($users != "")
-                        @foreach ($users as $id => $user)
-                        <tr>
-                            <td><img src="{{ url($user['image']) }}" alt="" srcset="" style="width: 80px; height: 50px;"></td>
-                            <td>{{ $user['first_name'] ?? "" }}</td>
-                            <td>{{ $user['last_name'] ?? "" }}</td>
-                            <td>{{ $user['city'] ?? "" }}</td>
-                            <td class="d-flex">
-                                <a href="{{ route('users.edit',$id) }}" class="btn btn-primary mx-2"> Edit </a>
-                                <form action="{{ route('users.destroy',$id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="submit" class="btn btn-danger" value="Delete">
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
+                        @if ($users != '')
+                            @foreach ($users as $id => $user)
+                                <tr>
+                                    <td><img src="{{ url($user['image']) }}" alt="" srcset=""
+                                            style="width: 80px; height: 50px;"></td>
+                                    <td>{{ $user['first_name'] ?? '' }}</td>
+                                    <td>{{ $user['last_name'] ?? '' }}</td>
+                                    <td>{{ $user['city'] ?? '' }}</td>
+                                    <td class="d-flex">
+                                        <a href="{{ route('users.edit', $id) }}" class="btn btn-primary mx-2"> Edit </a>
+                                        <form action="{{ route('users.destroy', $id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
 
                     </tbody>
@@ -64,7 +65,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('upload-preview/assets/js/jquery.uploadPreview.min.js') }}"></script>
     <script>
-         $.uploadPreview({
+        $.uploadPreview({
             input_field: "#image-upload", // Default: .image-upload
             preview_box: "#image-preview", // Default: .image-preview
             label_field: "#image-label", // Default: .image-label
